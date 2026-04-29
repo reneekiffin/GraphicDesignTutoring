@@ -16,11 +16,14 @@ Just **double-click `index.html`**. It opens in your browser.
 
 ```
 /
-├── index.html         ← the page itself, all content lives here
-├── styles.css         ← all styling
+├── index.html         ← the home page, all main content lives here
+├── styles.css         ← all styling (home page + blog)
 ├── script.js          ← menu toggle, FAQ accordion, scroll animations, calendar loader
 ├── sitemap.xml        ← search engines use this to find pages
 ├── robots.txt         ← tells search engines what they can crawl
+├── blog/
+│   ├── index.html     ← blog landing page (lists every post)
+│   └── *.html         ← one HTML file per blog post
 ├── images/
 │   ├── og-image.jpg     ← preview image when the site is shared on social
 │   ├── renee-headshot.jpg ← About section photo
@@ -86,11 +89,52 @@ Replace `images/favicon.ico` with your new icon (16×16 and 32×32 multi-resolut
 
 ---
 
+## Adding or editing a blog post
+
+The blog lives in the `blog/` folder. Each post is its own HTML file. Adding a new post is three steps:
+
+### 1. Create the post file
+
+In `blog/`, copy an existing post (e.g. `where-to-find-free-mockups.html`) and rename it. The filename is also the URL, so use a short, descriptive slug with words separated by hyphens. Example: `logo-design-checklist.html`.
+
+Open the new file and update:
+
+- `<title>` (the browser tab title)
+- `<meta name="description">` (the search snippet)
+- `<meta name="keywords">`
+- `<link rel="canonical">` URL — change the filename at the end
+- `og:title`, `og:description`, `og:url`, `twitter:title`, `twitter:description`
+- `article:published_time` and the `JSON-LD` `datePublished` / `dateModified` (use today's date in `YYYY-MM-DD` format)
+- The JSON-LD `headline`, `description`, and `mainEntityOfPage.@id` URL
+- The visible `<h1>` headline
+- The `<time datetime="...">` and "X min read" line under the title
+- Everything inside `<div class="post-prose">` — that's the body of the article
+
+### 2. List the post on the blog index
+
+Open `blog/index.html` and find the `<ul class="post-list">`. Copy the existing `<li class="post-card">` block, paste it as the first item (so the most recent is on top), and update the link, date, title, and excerpt.
+
+### 3. Add the post to `sitemap.xml`
+
+In `sitemap.xml`, copy the `<url>` block for an existing blog post and update the `<loc>` to point to your new file. Update `<lastmod>` to today's date.
+
+That's it. No build step, no database. Save, refresh, you're live.
+
+### Tips
+
+- Keep the file name short and lowercase, words separated by hyphens. This becomes the URL.
+- Always link out to other sites with `target="_blank" rel="noopener"`.
+- If you want a back-link from the post body to the booking page, write `<a href="../index.html#book">Book a session</a>`.
+- Use `<h2>` for major sections inside the article. The `<h1>` is reserved for the post title.
+
+---
+
 ## Replace `YOUR-DOMAIN.com` before launching
 
 Before you go live, find-and-replace `YOUR-DOMAIN.com` with the real domain (e.g. `tutoring.reneekiffin.com`). It appears in:
 
 - **`index.html`** — `<link rel="canonical">`, `og:url`, `og:image`, `twitter:image`, and inside all three JSON-LD blocks (look for `"url"`, `"image"`, etc.)
+- **`blog/index.html`** and every post in `blog/` — same set of meta and JSON-LD fields
 - **`sitemap.xml`** — every `<loc>` line
 - **`robots.txt`** — the `Sitemap:` line
 
