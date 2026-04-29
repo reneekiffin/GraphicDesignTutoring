@@ -6,7 +6,8 @@
      3. Close mobile nav after clicking a link
      4. FAQ — close other items when one opens
      5. Reveal-on-scroll via IntersectionObserver
-     6. Lazy-load Lunacal embed when booking section nears viewport
+     6. Marker-sweep highlight animation on .highlight spans
+     7. Lazy-load Lunacal embed when booking section nears viewport
    ============================================================ */
 (function () {
   'use strict';
@@ -70,7 +71,30 @@
     revealEls.forEach((el) => revealObserver.observe(el));
   }
 
-  /* ---------- 6. Lunacal lazy-load ---------- */
+  /* ---------- 6. Marker-sweep highlight ----------
+     Triggers a left-to-right yellow highlight on any <span class="highlight">
+     when it scrolls into view. Reduced-motion users get the highlight applied
+     instantly via CSS, so they still see the visual emphasis. */
+  const highlightEls = document.querySelectorAll('.highlight');
+
+  if (highlightEls.length) {
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      highlightEls.forEach((el) => el.classList.add('is-highlighted'));
+    } else {
+      const highlightObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-highlighted');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.6 });
+
+      highlightEls.forEach((el) => highlightObserver.observe(el));
+    }
+  }
+
+  /* ---------- 7. Lunacal lazy-load ---------- */
   const bookingSection = document.querySelector('#book');
   let lunacalLoaded = false;
 
