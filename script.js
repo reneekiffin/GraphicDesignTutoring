@@ -7,7 +7,8 @@
      4. FAQ — close other items when one opens
      5. Reveal-on-scroll via IntersectionObserver
      6. Marker-sweep highlight animation on .highlight spans
-     7. Lazy-load Lunacal embed when booking section nears viewport
+     7. Blog post filter (tabbed category filter on /blog/)
+     8. Lazy-load Lunacal embed when booking section nears viewport
    ============================================================ */
 (function () {
   'use strict';
@@ -94,7 +95,38 @@
     }
   }
 
-  /* ---------- 7. Lunacal lazy-load ---------- */
+  /* ---------- 7. Blog post filter ----------
+     On the blog index, filter visible cards by category. Each .post-card
+     has a data-category attribute; each .post-filter-btn has data-filter.
+     "all" shows everything. */
+  const filterButtons = document.querySelectorAll('.post-filter-btn');
+  const postCards = document.querySelectorAll('.post-card[data-category]');
+  const filterEmpty = document.querySelector('.post-filter-empty');
+
+  if (filterButtons.length && postCards.length) {
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+
+        filterButtons.forEach((b) => {
+          const isActive = b === btn;
+          b.classList.toggle('is-active', isActive);
+          b.setAttribute('aria-pressed', String(isActive));
+        });
+
+        let visibleCount = 0;
+        postCards.forEach((card) => {
+          const matches = filter === 'all' || card.getAttribute('data-category') === filter;
+          card.classList.toggle('is-hidden', !matches);
+          if (matches) visibleCount += 1;
+        });
+
+        if (filterEmpty) filterEmpty.hidden = visibleCount > 0;
+      });
+    });
+  }
+
+  /* ---------- 8. Lunacal lazy-load ---------- */
   const bookingSection = document.querySelector('#book');
   let lunacalLoaded = false;
 

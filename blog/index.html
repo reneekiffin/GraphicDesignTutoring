@@ -110,8 +110,20 @@
     -->
     <section class="section">
       <div class="container">
+
+        <!-- Filter tabs.
+             To add a new category, just add a new <button> with a unique data-filter
+             value and tag matching post cards with the same value in data-category. -->
+        <div class="post-filter" role="group" aria-label="Filter posts by category">
+          <button type="button" class="post-filter-btn is-active" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="post-filter-btn" data-filter="workflow" aria-pressed="false">Workflow</button>
+          <button type="button" class="post-filter-btn" data-filter="resources" aria-pressed="false">Resources</button>
+        </div>
+
+        <p class="post-filter-empty" hidden>No posts in that category yet. Check back soon.</p>
+
         <ul class="post-list">
-          <li class="post-card">
+          <li class="post-card" data-category="workflow">
             <article>
               <p class="post-meta"><time datetime="2026-04-29">April 29, 2026</time> &middot; Workflow</p>
               <h2><a href="file-organization-for-design-students.html">How to organize your design files (and never lose a link again)</a></h2>
@@ -119,17 +131,17 @@
               <p><a class="post-link" href="file-organization-for-design-students.html">Read the post &rarr;</a></p>
             </article>
           </li>
-          <li class="post-card">
+          <li class="post-card" data-category="resources">
             <article>
-              <p class="post-meta"><time datetime="2026-04-29">April 29, 2026</time> &middot; Resources</p>
+              <p class="post-meta"><time datetime="2026-04-20">April 20, 2026</time> &middot; Resources</p>
               <h2><a href="where-to-find-free-images.html">Where to find free images for your designs</a></h2>
               <p>The free stock photo sites I send my students to, including Unsplash, Pexels, Kaboompics, and a few lesser known ones. Plus how to avoid the photos that show up on every Pinterest mood board.</p>
               <p><a class="post-link" href="where-to-find-free-images.html">Read the post &rarr;</a></p>
             </article>
           </li>
-          <li class="post-card">
+          <li class="post-card" data-category="resources">
             <article>
-              <p class="post-meta"><time datetime="2026-04-29">April 29, 2026</time> &middot; Resources</p>
+              <p class="post-meta"><time datetime="2026-03-20">March 20, 2026</time> &middot; Resources</p>
               <h2><a href="where-to-find-free-mockups.html">Where to find free mockups for your designs</a></h2>
               <p>Mockups make portfolios sing, but most sites bury free options behind premium filters. Here are the resources I send students to, plus the one filter you should never skip.</p>
               <p><a class="post-link" href="where-to-find-free-mockups.html">Read the post &rarr;</a></p>
