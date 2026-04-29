@@ -49,14 +49,15 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ---------- Active nav link on scroll ----------
-const sections  = document.querySelectorAll('section[id]');
-const navLinks  = document.querySelectorAll('.nav__link:not(.nav__link--cta)');
+const sections         = document.querySelectorAll('section[id]');
+// Excludes the CTA link so only section links receive the 'active' class
+const sectionNavLinks  = document.querySelectorAll('.nav__link:not(.nav__link--cta)');
 
 const sectionObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        navLinks.forEach(link => link.classList.remove('active'));
+        sectionNavLinks.forEach(link => link.classList.remove('active'));
         const activeLink = document.querySelector(`.nav__link[href="#${entry.target.id}"]`);
         if (activeLink) activeLink.classList.add('active');
       }
@@ -84,9 +85,11 @@ const validators = {
   email: {
     el: document.getElementById('email'),
     errorEl: document.getElementById('email-error'),
+    // Matches user@domain.tld — rejects addresses missing @, domain, or TLD
     validate(val) {
+      const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!val.trim()) return 'Please enter your email address.';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return 'Please enter a valid email address.';
+      if (!EMAIL_PATTERN.test(val)) return 'Please enter a valid email address.';
       return '';
     }
   },
